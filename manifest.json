@@ -1,8 +1,8 @@
 {
     "name": "no more fb",
-    "version": "0.1",
+    "version": "0.3",
     "description": "Logs out of fb when you close the tab",
-    "permissions": ["tabs", "cookies", "<all_urls>"],
+    "permissions": ["tabs", "cookies", "*://*.facebook.com/*"],
     "background": {
       "scripts": ["background.js"],
       "persistent": false
