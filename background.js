@@ -2,21 +2,22 @@ var urlRegex = /https?:\/\/([^\.]+\.)?facebook.com/;
 var urls = [];
 
 chrome.tabs.onCreated.addListener(function(tab) {
-    if (tab.url) {
-        urls[tab.id] = tab.url;
+    if (urlRegex.test(tab.url)) {
+        urls[tab.id] = true;
     }
   });
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-  if (changeInfo.url) {
-    urls[tabId] = changeInfo.url;
+  if (urlRegex.test(changeInfo.url)) {
+    urls[tabId] = true;
   }
 });
 
 chrome.tabs.onRemoved.addListener(function(tabId, info) {
-    var urlToCheck = urls[tabId];
-    if(urlRegex.test(urlToCheck)) {
+    if(tabId in urls) {
+        // this logs out
         chrome.cookies.remove({url: "https://www.facebook.com/", name: "c_user"});
+        // this removes one-click log in
         chrome.cookies.remove({url: "https://www.facebook.com/", name: "sb"});
     }
 });
